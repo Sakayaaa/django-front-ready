@@ -1,19 +1,19 @@
 {% if user.is_authenticated %}
 <nav class="navbar bg-dark">
       <h1>
-        <a href="index.html"><i class="fas fa-code"></i> DevConnector</a>
+        <a href="{% url "index" %}"><i class="fas fa-code"></i> DevConnector</a>
       </h1>
       <ul>
-        <li><a href="profiles.html">Developers</a></li>
-        <li><a href="posts.html">Posts</a></li>
+        <li><a href="{% url "profiles" %}">Developers</a></li>
+        <li><a href="{% url "posts" %}">Posts</a></li>
         <li>
-          <a href="dashboard.html" title="Dashboard"
+          <a href="{% url "dashboard" %}" title="Dashboard"
             ><i class="fas fa-user"></i>
             <span class="hide-sm">Dashboard</span></a
           >
         </li>
         <li>
-          <a href="login.html" title="Logout">
+          <a href="{% url "login" %}" title="Logout">
             <i class="fas fa-sign-out-alt"></i>
             <span class="hide-sm">Logout</span></a
           >
@@ -23,12 +23,12 @@
 {% else %}
 <nav class="navbar bg-dark">
       <h1>
-        <a href="dashboard.html"> <i class="fas fa-code"></i> DevConnector </a>
+        <a href="{% url "dashboard" %}"> <i class="fas fa-code"></i> DevConnector </a>
       </h1>
       <ul>
-        <li><a href="profiles.html">Developers</a></li>
-        <li><a href="register.html">Register</a></li>
-        <li><a href="login.html">Login</a></li>
+        <li><a href="{% url "profiles" %}">Developers</a></li>
+        <li><a href="{% url "register" %}">Register</a></li>
+        <li><a href="{% url "login" %}">Login</a></li>
       </ul>
 </nav>
 {% endif %}

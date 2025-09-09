@@ -1,24 +1,21 @@
 {% extends "base.html" %}
 {% block content %}
     <section class="container">
-      <a href="posts.html" class="btn">Back To Posts</a>
+      <a href="{% url "posts" %}" class="btn">Back To Posts</a>
       <div class="post bg-white p-1 my-1">
         <div>
-          <a href="profile.html">
+          <a href="{% url "profile" post.author.id %}">
             <img
               class="round-img"
-              src="https://www.gravatar.com/avatar/205e460b479e2e5b48aec07710c08d50?s=200"
+              src="{{post.author.pfp.url}}"
               alt=""
             />
-            <h4>John Doe</h4>
+            <h4>{{post.author.user.username}}</h4>
           </a>
         </div>
         <div>
           <p class="my-1">
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Sint
-            possimus corporis sunt necessitatibus! Minus nesciunt soluta
-            suscipit nobis. Amet accusamus distinctio cupiditate blanditiis
-            dolor? Illo perferendis eveniet cum cupiditate aliquam?
+            {{post.body}}
           </p>
         </div>
       </div>
@@ -39,47 +36,25 @@
       </div>
 
       <div class="posts">
+        {% for comment in comments|dictsortreversed:"updated_at"%}
         <div class="post bg-white p-1 my-1">
           <div>
-            <a href="profile.html">
+            <a href="{% url "profile" comment.author.id %}">
               <img
                 class="round-img"
-                src="https://www.gravatar.com/avatar/205e460b479e2e5b48aec07710c08d50?s=200"
+                src="{{comment.author.pfp.url}}"
                 alt=""
               />
-              <h4>John Doe</h4>
+              <h4>{{comment.author.user}}</h4>
             </a>
           </div>
           <div>
             <p class="my-1">
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Sint
-              possimus corporis sunt necessitatibus! Minus nesciunt soluta
-              suscipit nobis. Amet accusamus distinctio cupiditate blanditiis
-              dolor? Illo perferendis eveniet cum cupiditate aliquam?
+              {{comment.body}}
             </p>
           </div>
         </div>
-
-        <div class="post bg-white p-1 my-1">
-          <div>
-            <a href="profile.html">
-              <img
-                class="round-img"
-                src="https://www.gravatar.com/avatar/205e460b479e2e5b48aec07710c08d50?s=200"
-                alt=""
-              />
-              <h4>John Doe</h4>
-            </a>
-          </div>
-          <div>
-            <p class="my-1">
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Sint
-              possimus corporis sunt necessitatibus! Minus nesciunt soluta
-              suscipit nobis. Amet accusamus distinctio cupiditate blanditiis
-              dolor? Illo perferendis eveniet cum cupiditate aliquam?
-            </p>
-          </div>
-        </div>
+        {% endfor %}
       </div>
     </section>
 {% endblock %}
