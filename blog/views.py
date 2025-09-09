@@ -1,22 +1,39 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect, get_object_or_404
 from .models import Post, Comment
-
+from .forms import AddCommentForm
+from django.contrib.auth.decorators import login_required
 
 def index(request):
     return render(request, 'blog/index.html', {})
+
+
+def posts(request):
+    posts = Post.objects.all()
+    return render(request, 'blog/posts.html', {'posts': posts})
 
 
 def post(request, id):
     post = Post.objects.get(id=id)
     all_comments = Comment.objects.all()
     target_comments = []
+    form = AddCommentForm()
+    
     for comment in all_comments:
         if comment.post.id == post.id:
             target_comments.append(comment)
+
+    return render(request, 'blog/post.html', {'post': post, 'comments': target_comments, 'form':form})
+
+
+@login_required
+def add_comment(request, post_id):
+    post = get_object_or_404(Post, id=post_id)
     
-    return render(request, 'blog/post.html', {'post':post, 'comments':target_comments})
-
-
-def posts(request):
-    posts = Post.objects.all()
-    return render(request, 'blog/posts.html', {'posts':posts})
+    if request.method == "POST":
+        form = AddCommentForm(request.POST)
+        if form.is_valid():
+            comment = form.save(commit=False)
+            comment.post = post
+            comment.author = request.user.userprofile  # attach logged-in user
+            comment.save()
+    return redirect('post', id=post.id)  # always go back to the post page

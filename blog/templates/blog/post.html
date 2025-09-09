@@ -24,13 +24,9 @@
         <div class="post-form-header bg-primary">
           <h3>Leave A Comment</h3>
         </div>
-        <form class="form my-1">
-          <textarea
-            name="text"
-            cols="30"
-            rows="5"
-            placeholder="Comment on this post"
-          ></textarea>
+        <form class="form my-1" method="POST" action="{% url 'add_comment' post.id %}">
+          {% csrf_token %}
+          {{ form.body }}
           <input type="submit" class="btn btn-dark my-1" value="Submit" />
         </form>
       </div>
