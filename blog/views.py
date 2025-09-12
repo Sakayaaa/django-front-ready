@@ -1,15 +1,27 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from .models import Post, Comment
-from .forms import AddCommentForm
+from .forms import AddCommentForm, CreatePostForm
 from django.contrib.auth.decorators import login_required
 
 def index(request):
     return render(request, 'blog/index.html', {})
 
 
+@login_required
 def posts(request):
-    posts = Post.objects.all()
-    return render(request, 'blog/posts.html', {'posts': posts})
+    posts = Post.objects.all().order_by()
+    
+    if request.method == 'POST':
+        form = CreatePostForm(request.POST)
+        if form.is_valid():
+            new_post = form.save(commit=False)
+            new_post.author = request.user.userprofile
+            new_post.save()
+            return redirect('posts')
+    else:
+        form = CreatePostForm()
+
+    return render(request, 'blog/posts.html', {'posts': posts, 'form':form})
 
 
 def post(request, id):
