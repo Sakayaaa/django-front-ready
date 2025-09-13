@@ -14,7 +14,7 @@
           {% csrf_token %}
           {{form.title}}
           {{form.body}}
-          <input type="submit" value="Submit" class="btn btn-dark my-1" />
+          <input type="submit" value="Create" class="btn btn-dark my-1" />
         </form>
         <div class="posts">
           {% for post in posts|dictsortreversed:"updated_at"%}

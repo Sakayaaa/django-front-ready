@@ -27,7 +27,7 @@
         <form class="form my-1" method="POST" action="{% url 'add_comment' post.id %}">
           {% csrf_token %}
           {{ form.body }}
-          <input type="submit" class="btn btn-dark my-1" value="Submit" />
+          <input type="submit" class="btn btn-dark my-1" value="Add" />
         </form>
       </div>
 

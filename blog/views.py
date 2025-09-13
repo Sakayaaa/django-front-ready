@@ -9,7 +9,7 @@ def index(request):
 
 @login_required
 def posts(request):
-    posts = Post.objects.all().order_by()
+    posts = Post.objects.all().order_by('-updated_at')
     
     if request.method == 'POST':
         form = CreatePostForm(request.POST)
