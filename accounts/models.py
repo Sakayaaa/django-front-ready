@@ -2,6 +2,7 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.db.models.signals import post_save
 from django.dispatch import receiver
+from django.urls import reverse
 
 
 class UserProfile(models.Model):
@@ -12,6 +13,9 @@ class UserProfile(models.Model):
 
     def __str__(self):
         return f"{self.user}"
+
+    def get_absolute_url(self):
+        return reverse("profile", kwargs={"id": self.id})
 
 
 @receiver(post_save, sender=User)
@@ -29,13 +33,13 @@ class Experience(models.Model):
     end_date = models.DateField(null=True, blank=True)
     current = models.BooleanField(default=False)
     description = models.TextField()
-    
+
     def __str__(self):
         if self.current:
             return f"{self.job} at {self.company} (Current)"
         return f"{self.job} at {self.company}"
-    
-    
+
+
 class Education(models.Model):
     user = models.ForeignKey(UserProfile, on_delete=models.CASCADE)
     school = models.CharField(max_length=100)
@@ -45,7 +49,7 @@ class Education(models.Model):
     end_date = models.DateField(null=True, blank=True)
     current = models.BooleanField(default=False)
     description = models.TextField()
-    
+
     def __str__(self):
         if self.current:
             return f"{self.degree} in {self.field} from {self.school} (Current)"

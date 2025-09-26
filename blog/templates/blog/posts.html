@@ -20,7 +20,7 @@
           {% for post in posts|dictsortreversed:"updated_at"%}
           <div class="post bg-white my-1 p-1">
             <div>
-              <a href="{% url "profile" post.author.id %}">
+              <a href="{{ post.author.get_absolute_url }}">
                 <img
                   class="round-img"
                   src="{{post.author.pfp.url}}"
