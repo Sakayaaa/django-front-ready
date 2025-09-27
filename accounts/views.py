@@ -2,6 +2,8 @@ from django.shortcuts import render, redirect
 from .models import UserProfile, Experience, Education
 from .forms import AddEducationForm, AddExperienceForm
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth import authenticate, login as django_login
+from django.urls import reverse
 
 
 @login_required
@@ -41,6 +43,15 @@ def dashboard(request):
 
 
 def login(request):
+    if request.method == "POST":
+        u = request.POST['username']
+        p = request.POST['password']
+        user = authenticate(request, username=u, password=p)
+        
+        if user:
+            django_login(request, user)
+            return redirect(reverse('profile', kwargs={'id':user.userprofile.id}))
+        return render(request, 'accounts/login.html', {})
     return render(request, 'accounts/login.html', {})
 
 
@@ -56,5 +67,3 @@ def profiles(request):
 def register(request):
     return render(request, 'accounts/register.html', {})
 
-
-0

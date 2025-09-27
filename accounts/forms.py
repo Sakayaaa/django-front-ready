@@ -47,3 +47,6 @@ class AddEducationForm(forms.ModelForm):
         if current:
             cleaned_data["end_date"] = None
         return cleaned_data
+
+
+
