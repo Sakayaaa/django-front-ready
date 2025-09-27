@@ -32,7 +32,7 @@
       </div>
 
       <div class="posts">
-        {% for comment in comments|dictsortreversed:"updated_at"%}
+        {% for comment in post.comment_set.all|dictsortreversed:"updated_at"%}
         <div class="post bg-white p-1 my-1">
           <div>
             <a href="{% url "profile" comment.author.id %}">

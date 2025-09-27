@@ -26,15 +26,15 @@ def posts(request):
 
 def post(request, id):
     post = Post.objects.get(id=id)
-    all_comments = Comment.objects.all()
-    target_comments = []
     form = AddCommentForm()
     
-    for comment in all_comments:
-        if comment.post.id == post.id:
-            target_comments.append(comment)
+    # all_comments = Comment.objects.all()
+    # target_comments = []
+    # for comment in all_comments:
+    #     if comment.post.id == post.id:
+    #         target_comments.append(comment)
 
-    return render(request, 'blog/post.html', {'post': post, 'comments': target_comments, 'form':form})
+    return render(request, 'blog/post.html', {'post': post, 'form':form})
 
 
 @login_required
