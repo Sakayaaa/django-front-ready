@@ -24,8 +24,8 @@ def posts(request):
     return render(request, 'blog/posts.html', {'posts': posts, 'form':form})
 
 
-def post(request, id):
-    post = Post.objects.get(id=id)
+def post(request, slug):
+    post = Post.objects.get(slug=slug)
     form = AddCommentForm()
     
     # all_comments = Comment.objects.all()

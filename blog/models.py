@@ -1,10 +1,12 @@
 from django.db import models
 from accounts.models import UserProfile
 from django.urls import reverse
+from django.utils.text import slugify
 
 class Post(models.Model):
     author = models.ForeignKey(UserProfile, on_delete=models.CASCADE)
     title = models.CharField(max_length=50)
+    slug = models.SlugField(unique=True, blank=True, null=True)
     body = models.TextField()
     like = models.ManyToManyField(UserProfile, related_name='post_like', blank=True, null=True)
     dislike = models.ManyToManyField(UserProfile, related_name='post_dislike', blank=True, null=True)
@@ -15,7 +17,12 @@ class Post(models.Model):
         return self.title
     
     def get_absolute_url(self):
-        return reverse("post", kwargs={"id": self.id})
+        return reverse("post", kwargs={"slug": self.slug})
+    
+    def save(self):
+        if not self.slug:
+            self.slug = slugify(self.title)
+        super().save()
     
     
     

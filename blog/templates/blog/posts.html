@@ -17,7 +17,7 @@
           <input type="submit" value="Create" class="btn btn-dark my-1" />
         </form>
         <div class="posts">
-          {% for post in posts|dictsortreversed:"updated_at"%}
+          {% for post in posts %}
           <div class="post bg-white my-1 p-1">
             <div>
               <a href="{{ post.author.get_absolute_url }}">
@@ -40,7 +40,7 @@
               <button class="btn">
                 <i class="fas fa-thumbs-down"> {{post.dislike.count}} </i>
               </button>
-              <a href="{% url "post" post.id %}" class="btn btn-primary">
+              <a href="{{ post.get_absolute_url }}" class="btn btn-primary">
                 Discussion
               </a>
             </div>
