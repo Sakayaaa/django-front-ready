@@ -1,15 +1,22 @@
 from django.db import models
 from accounts.models import UserProfile
+from django.urls import reverse
 
 class Post(models.Model):
     author = models.ForeignKey(UserProfile, on_delete=models.CASCADE)
     title = models.CharField(max_length=50)
     body = models.TextField()
+    like = models.ManyToManyField(UserProfile, related_name='post_like', blank=True, null=True)
+    dislike = models.ManyToManyField(UserProfile, related_name='post_dislike', blank=True, null=True)
     start_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
         return self.title
+    
+    def get_absolute_url(self):
+        return reverse("post", kwargs={"id": self.id})
+    
     
     
 class Comment(models.Model):

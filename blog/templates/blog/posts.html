@@ -35,10 +35,10 @@
                 {{post.body}}
               </p>
               <button class="btn">
-                <i class="fas fa-thumbs-up"></i> <span>4</span>
+                <i class="fas fa-thumbs-up"> {{post.like.count}} </i>
               </button>
               <button class="btn">
-                <i class="fas fa-thumbs-down"></i>
+                <i class="fas fa-thumbs-down"> {{post.dislike.count}} </i>
               </button>
               <a href="{% url "post" post.id %}" class="btn btn-primary">
                 Discussion
