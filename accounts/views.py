@@ -55,3 +55,7 @@ def profiles(request):
 
 def register(request):
     return render(request, 'accounts/register.html', {})
+
+
+def test():
+    pass
