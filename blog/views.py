@@ -37,9 +37,9 @@ def post(request, slug):
     return render(request, 'blog/post.html', {'post': post, 'form':form})
 
 
-@login_required
-def add_comment(request, post_id):
-    post = get_object_or_404(Post, id=post_id)
+# @login_required
+def add_comment(request, slug):
+    post = get_object_or_404(Post, slug=slug)
     
     if request.method == "POST":
         form = AddCommentForm(request.POST)
@@ -48,4 +48,4 @@ def add_comment(request, post_id):
             comment.post = post
             comment.author = request.user.userprofile  # attach logged-in user
             comment.save()
-    return redirect('post', id=post.id)  # always go back to the post page
+    return redirect('post', slug=post.slug)  # always go back to the post page
