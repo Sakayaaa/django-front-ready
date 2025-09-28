@@ -56,7 +56,6 @@ def login(request):
     return render(request, 'accounts/login.html', {})
 
 
-@login_required
 def logout(request):
     django_logout(request)
     return redirect('login')
