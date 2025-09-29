@@ -7,9 +7,9 @@ from django.urls import reverse
 
 class UserProfile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
+    pfp = models.ImageField(upload_to='pfps', default='pfps/default_userprofile_picture.png')
+    dev_status = models.
     bio = models.TextField()
-    pfp = models.ImageField(
-        upload_to='pfps', default='pfps/default_userprofile_picture.png')
 
     def __str__(self):
         return f"{self.user}"
@@ -17,11 +17,11 @@ class UserProfile(models.Model):
     def get_absolute_url(self):
         return reverse("profile", kwargs={"id": self.id})
 
-
-@receiver(post_save, sender=User)
-def create_profile(sender, instance, created, **kwargs):
-    if created:
-        UserProfile.objects.create(user=instance)
+# ____AUTO CREATE USER PROFILE WHEN A NEW USER HAS BEEN CREATED____
+# @receiver(post_save, sender=User)
+# def create_profile(sender, instance, created, **kwargs):
+#     if created:
+#         UserProfile.objects.create(user=instance)
 
 
 class Experience(models.Model):
