@@ -1,1 +1,4 @@
 my_venv
+weblog\__pycache__
+blog\__pycache__
+accounts\__pycache__
