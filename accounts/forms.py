@@ -1,5 +1,5 @@
 from django import forms
-from .models import Experience, Education
+from .models import Experience, Education, UserProfile
 
 
 class AddExperienceForm(forms.ModelForm):
@@ -49,4 +49,29 @@ class AddEducationForm(forms.ModelForm):
         return cleaned_data
 
 
-
+class UserProfileForm(forms.ModelForm):
+    class Meta:
+        model = UserProfile
+        fields = ['professional_status', 'pfp', 'company', 'website',
+                  'location', 'skills', 'github', 'bio', 'twitter',
+                  'facebook', 'youtube', 'linkedin', 'instagram'
+        ]
+        widgets = {
+            'professional_status': forms.Select(attrs={'class': 'form-control'}),
+            'company': forms.TextInput(attrs={'placeholder': "Company"}),
+            'website': forms.TextInput(attrs={'placeholder': "Website"}),
+            'location': forms.TextInput(attrs={'placeholder': "Location"}),
+            'skills': forms.TextInput(attrs={'placeholder': "*Skills"}),
+            'github': forms.URLInput(attrs={'placeholder': "Github Link"}),
+            'bio': forms.Textarea(attrs={'placeholder': "A short bio of yourself"}),
+            'twitter': forms.URLInput(attrs={'placeholder': "Twitter URL", 'class': 'form-control'}),
+            'facebook': forms.URLInput(attrs={'placeholder': "Facebook URL"}),
+            'youtube': forms.URLInput(attrs={'placeholder': "Youtube URL"}),
+            'linkedin': forms.URLInput(attrs={'placeholder': "Linkedin URL"}),
+            'instagram': forms.URLInput(attrs={'placeholder': "Instagram URL"}),
+        }
+    
+    # To set the default-showing value for 'professional_status' field
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['professional_status'].empty_label = "* Select Professional Status"

@@ -6,11 +6,35 @@ from django.urls import reverse
 
 
 class UserProfile(models.Model):
+    class ProfessionalStatus(models.TextChoices):
+        DEVELOPER = "DEV", "Developer"
+        JUNIOR = "JR", "Junior Developer"
+        SENIOR = "SR", "Senior Developer"
+        MANAGER = "MGR", "Manager"
+        STUDENT = "STU", "Student or Learning"
+        INSTRUCTOR = "INS", "Instructor or Teacher"
+        INTERN = "INT", "Intern"
+        OTHER = "OTH", "Other"
+        
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     pfp = models.ImageField(upload_to='pfps', default='pfps/default_userprofile_picture.png')
-    dev_status = models.
-    bio = models.TextField()
-
+    professional_status = models.CharField(
+        max_length=3,
+        choices=ProfessionalStatus.choices,
+        default=ProfessionalStatus.DEVELOPER
+    )
+    company = models.CharField(max_length=30, null=True, blank=True)
+    website = models.URLField(null=True, blank=True)
+    location = models.CharField(max_length=50, null=True, blank=True)
+    skills = models.CharField(max_length=60)
+    github = models.URLField(null=True, blank=True)
+    bio = models.TextField(max_length=150)
+    twitter = models.URLField(null=True, blank=True)
+    facebook = models.URLField(null=True, blank=True)
+    youtube = models.URLField(null=True, blank=True)
+    linkedin = models.URLField(null=True, blank=True)
+    instagram = models.URLField(null=True, blank=True)
+    
     def __str__(self):
         return f"{self.user}"
 

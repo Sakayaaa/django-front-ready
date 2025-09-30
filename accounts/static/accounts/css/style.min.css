@@ -660,3 +660,18 @@ img {
         padding: 0.3rem 0.4rem
     }
 }
+
+.form .social-input {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem; /* فاصله بین آیکون و input */
+}
+
+.form .social-input input {
+  flex: 1 !important;   /* پر کنه باقی فضا رو */
+  width: 100% !important;
+  min-width: 0 !important;
+  display: block !important;
+  font-size: 1rem;      /* خواناتر بشه */
+  padding: 0.5rem;
+}

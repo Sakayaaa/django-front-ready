@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
-from .models import UserProfile, Experience, Education
-from .forms import AddEducationForm, AddExperienceForm
+from .models import UserProfile
+from .forms import AddEducationForm, AddExperienceForm, UserProfileForm
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login as django_login, logout as django_logout
 from django.urls import reverse
@@ -34,8 +34,23 @@ def addexperience(request):
     return render(request, 'accounts/addexperience.html', {'form': form})
 
 
+@login_required
 def createprofile(request):
-    return render(request, 'accounts/createprofile.html', {})
+    user = request.user
+    try:
+        user_profile = user.userprofile
+    except UserProfile.DoesNotExist:
+        user_profile = None
+    
+    if request.method == 'POST':
+        form = UserProfileForm(request.POST, instance=user_profile)
+        if form.is_valid():
+            profile = form.save(commit=False)
+            profile.user = user
+            profile.save()
+            return redirect('profile', id=profile.id)
+    form = UserProfileForm(instance=user_profile)
+    return render(request, 'accounts/createprofile.html', {'form': form})
 
 
 @login_required
@@ -51,7 +66,7 @@ def login(request):
 
         if user:
             django_login(request, user)
-            return redirect(reverse('profile', kwargs={'id': user.userprofile.id}))
+            return redirect(reverse('createprofile'))
         return render(request, 'accounts/login.html', {})
     return render(request, 'accounts/login.html', {})
 
@@ -70,7 +85,7 @@ def profile(request, id):
 @login_required
 def profiles(request):
     profiles = UserProfile.objects.all()
-    return render(request, 'accounts/profiles.html', {'profiles':profiles})
+    return render(request, 'accounts/profiles.html', {'profiles': profiles})
 
 
 def register(request):
