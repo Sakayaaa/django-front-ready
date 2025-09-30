@@ -8,19 +8,19 @@ from django.urls import reverse
 
 class UserProfile(models.Model):
     class ProfessionalStatus(models.TextChoices):
-        DEVELOPER = "DEV", "Developer"
-        JUNIOR = "JR", "Junior Developer"
-        SENIOR = "SR", "Senior Developer"
-        MANAGER = "MGR", "Manager"
-        STUDENT = "STU", "Student or Learning"
-        INSTRUCTOR = "INS", "Instructor or Teacher"
-        INTERN = "INT", "Intern"
-        OTHER = "OTH", "Other"
+        DEVELOPER = "Developer", "Developer"
+        JUNIOR = "Junior Developer", "Junior Developer"
+        SENIOR = "Senior Developer", "Senior Developer"
+        MANAGER = "Manager", "Manager"
+        STUDENT = "Student", "Student"
+        INSTRUCTOR = "Instructor", "Instructor"
+        INTERN = "Intern", "Intern"
+        OTHER = "Other", "Other"
         
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     pfp = models.ImageField(upload_to='pfps', default='pfps/default_userprofile_picture.png')
     professional_status = models.CharField(
-        max_length=3,
+        max_length=40,
         choices=ProfessionalStatus.choices,
         default=ProfessionalStatus.DEVELOPER
     )
