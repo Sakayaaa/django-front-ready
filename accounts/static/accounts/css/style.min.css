@@ -664,14 +664,14 @@ img {
 .form .social-input {
   display: flex;
   align-items: center;
-  gap: 0.5rem; /* فاصله بین آیکون و input */
+  gap: 0.5rem; 
 }
 
 .form .social-input input {
-  flex: 1 !important;   /* پر کنه باقی فضا رو */
+  flex: 1 !important;   
   width: 100% !important;
   min-width: 0 !important;
   display: block !important;
-  font-size: 1rem;      /* خواناتر بشه */
+  font-size: 1rem;      
   padding: 0.5rem;
 }
