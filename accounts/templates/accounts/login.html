@@ -1,10 +1,12 @@
 {% extends "base.html" %}
 {% block content %}
     <section class="container">
+      {% if error %}
       <!-- Alert -->
-      {% comment %} <div class="alert alert-danger">
+      <div class="alert alert-danger">
         Invalid Credentials
-      </div> {% endcomment %}
+      </div>
+      {% endif %}
 
       <h1 class="large text-primary">
         Sign In

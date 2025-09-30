@@ -67,7 +67,8 @@ def login(request):
         if user:
             django_login(request, user)
             return redirect(reverse('createprofile'))
-        return render(request, 'accounts/login.html', {})
+        else:
+            return render(request, 'accounts/login.html', {'error':'error'})
     return render(request, 'accounts/login.html', {})
 
 
