@@ -5,27 +5,24 @@
         Sign Up
       </h1>
       <p class="lead"><i class="fas fa-user"></i> Create Your Account</p>
-      <form action="dashboard.html" class="form">
+      <form action="" class="form" method="POST">
+        {% csrf_token %}
         <div class="form-group">
-          <input type="text" placeholder="Name" required />
+          {{form.username}}
         </div>
         <div class="form-group">
-          <input type="email" placeholder="Email Address" />
-          <small class="form-text">
-            This site uses Gravatar, so if you want a profile image, use a
-            Gravatar email
-          </small>
+          {{form.email}}
         </div>
         <div class="form-group">
-          <input type="password" placeholder="Password" minlength="6" />
+          {{form.password1}}
         </div>
         <div class="form-group">
-          <input type="password" placeholder="Confirm Password" minlength="6" />
+          {{form.password2}}
         </div>
         <input type="submit" value="Register" class="btn btn-primary" />
       </form>
       <p class="my-1">
-        Already have an account? <a href="login.html">Sign In</a>
+        Already have an account? <a href="{% url "login" %}">Sign In</a>
       </p>
     </section>
 {% endblock %}

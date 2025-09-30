@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from .models import UserProfile
-from .forms import AddEducationForm, AddExperienceForm, UserProfileForm
+from .forms import AddEducationForm, AddExperienceForm, UserProfileForm, RegisterForm
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login as django_login, logout as django_logout
 from django.urls import reverse
@@ -89,4 +89,12 @@ def profiles(request):
 
 
 def register(request):
-    return render(request, 'accounts/register.html', {})
+    if request.method == "POST":
+        form = RegisterForm(request.POST)
+        if form.is_valid():
+            user = form.save()
+            django_login(request, user)
+            return(redirect('createprofile'))
+        
+    form = RegisterForm()
+    return render(request, 'accounts/register.html', {'form':form})

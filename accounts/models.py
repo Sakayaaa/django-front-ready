@@ -5,6 +5,7 @@ from django.dispatch import receiver
 from django.urls import reverse
 
 
+
 class UserProfile(models.Model):
     class ProfessionalStatus(models.TextChoices):
         DEVELOPER = "DEV", "Developer"
@@ -78,3 +79,5 @@ class Education(models.Model):
         if self.current:
             return f"{self.degree} in {self.field} from {self.school} (Current)"
         return f"{self.degree} in {self.field} from {self.school}"
+
+

@@ -1,5 +1,8 @@
 from django import forms
 from .models import Experience, Education, UserProfile
+from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.models import User
+
 
 
 class AddExperienceForm(forms.ModelForm):
@@ -76,3 +79,43 @@ class UserProfileForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.fields['professional_status'].empty_label = "* Select Professional Status"
+        
+        
+class RegisterForm(UserCreationForm):
+    username = forms.CharField(
+        widget=forms.TextInput(attrs={
+            'placeholder': 'Username',
+            'class': 'form-control',
+            'required': True,
+            'autocomplete': 'off',
+        })
+    )
+    email = forms.EmailField(
+        required=True,
+        widget=forms.EmailInput(attrs={
+            'placeholder': 'Email Address',
+            'class': 'form-control',
+            'required': True,
+            'autocomplete': 'off',
+        })
+    )
+    password1 = forms.CharField(
+        widget=forms.PasswordInput(attrs={
+            'placeholder': 'Password',
+            'class': 'form-control',
+            'minlength': 8,
+            'autocomplete': 'new-password',
+        })
+    )
+    password2 = forms.CharField(
+        widget=forms.PasswordInput(attrs={
+            'placeholder': 'Confirm Password',
+            'class': 'form-control',
+            'minlength': 8,
+            'autocomplete': 'new-password',
+        })
+    )
+
+    class Meta:
+        model = User
+        fields = ['username', 'email', 'password1', 'password2']
