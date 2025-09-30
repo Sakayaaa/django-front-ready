@@ -1,17 +1,22 @@
 {% extends "base.html" %}
 {% block content %}
-    <section class="container">
-      <h1 class="large text-primary">
-        Create Your Profile
-      </h1>
-      <p class="lead">
-        <i class="fas fa-user"></i> Let's get some information to make your
-        profile stand out
-      </p>
-      <small>* = required fields</small>
-      <form class="form" action="" method="POST">
-        {% csrf_token %}
+<section class="container">
+  <h1 class="large text-primary">
+    Create Your Profile
+  </h1>
+  <p class="lead">
+    <i class="fas fa-user"></i> Let's get some information to make your
+    profile stand out
+  </p>
+  <small>* = required fields</small>
+  <form class="form" action="" method="POST" enctype="multipart/form-data">
+    {% csrf_token %}
         <div class="form-group">
+          <label for="id_profile_image">Profile Picture</label>
+          {{form.pfp}}
+          <small class="form-text">Upload your profile picture (optional)</small>
+        </div>
+    <div class="form-group">
           {{form.professional_status}}
           <small class="form-text"
             >Give us an idea of where you are at in your career</small
@@ -83,7 +88,7 @@
           {{form.instagram}}
         </div>
         <input type="submit" class="btn btn-primary my-1" />
-        <a class="btn btn-light my-1" href="dashboard.html">Go Back</a>
+        <a class="btn btn-light my-1" href="{% url "dashboard" %}">Go Back</a>
       </form>
     </section>
 {% endblock %}

@@ -43,7 +43,7 @@ def createprofile(request):
         user_profile = None
     
     if request.method == 'POST':
-        form = UserProfileForm(request.POST, instance=user_profile)
+        form = UserProfileForm(request.POST, request.FILES, instance=user_profile)
         if form.is_valid():
             profile = form.save(commit=False)
             profile.user = user

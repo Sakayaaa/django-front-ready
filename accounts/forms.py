@@ -69,6 +69,7 @@ class UserProfileForm(forms.ModelForm):
             'youtube': forms.URLInput(attrs={'placeholder': "Youtube URL"}),
             'linkedin': forms.URLInput(attrs={'placeholder': "Linkedin URL"}),
             'instagram': forms.URLInput(attrs={'placeholder': "Instagram URL"}),
+            'pfp': forms.ClearableFileInput(attrs={'class':'form-control'}),
         }
     
     # To set the default-showing value for 'professional_status' field
