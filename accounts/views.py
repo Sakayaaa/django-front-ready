@@ -41,9 +41,10 @@ def createprofile(request):
         user_profile = user.userprofile
     except UserProfile.DoesNotExist:
         user_profile = None
-    
+
     if request.method == 'POST':
-        form = UserProfileForm(request.POST, request.FILES, instance=user_profile)
+        form = UserProfileForm(
+            request.POST, request.FILES, instance=user_profile)
         if form.is_valid():
             profile = form.save(commit=False)
             profile.user = user
@@ -68,7 +69,7 @@ def login(request):
             django_login(request, user)
             return redirect(reverse('createprofile'))
         else:
-            return render(request, 'accounts/login.html', {'error':'error'})
+            return render(request, 'accounts/login.html', {'error': 'error'})
     return render(request, 'accounts/login.html', {})
 
 
@@ -80,7 +81,8 @@ def logout(request):
 @login_required
 def profile(request, id):
     user_profile = UserProfile.objects.get(id=id)
-    return render(request, 'accounts/profile.html', {'user_profile': user_profile})
+    skills_list = user_profile.skills.split(',') if user_profile.skills else []
+    return render(request, 'accounts/profile.html', {'user_profile': user_profile, 'skills_list': skills_list})
 
 
 @login_required
@@ -95,7 +97,7 @@ def register(request):
         if form.is_valid():
             user = form.save()
             django_login(request, user)
-            return(redirect('createprofile'))
-        
+            return (redirect('createprofile'))
+
     form = RegisterForm()
-    return render(request, 'accounts/register.html', {'form':form})
+    return render(request, 'accounts/register.html', {'form': form})
