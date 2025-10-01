@@ -58,41 +58,46 @@
         <!-- Experience -->
         <div class="profile-exp bg-white p-2">
           <h2 class="text-primary">Experiences</h2>
+          {% for experience in experience_list %}
           <div>
-            <h3>Microsoft</h3>
-            <p>Oct 2011 - Current</p>
-            <p><strong>Position: </strong> Senior Developer</p>
+            <h3>{{experience.company}}</h3>
             <p>
-              <strong>Description: </strong>Lorem ipsum dolor sit amet
-              consectetur, adipisicing elit. Perspiciatis in sed officiis,
-              dolorem amet cum?
+              {{experience.start_date|date:'F Y'}} -
+              {% if experience.current %}
+                Present
+              {% else %}
+                {{experience.end_date|date:'F Y'}}</p>
+              {% endif %}
+            <p><strong>Position: </strong> {{experience.job}}</p>
+            <p>
+              <strong>Description: </strong>
+              {{experience.description}}
             </p>
           </div>
-          <div>
-            <h3>Sun Microsystems</h3>
-            <p>Oct 2004 - Nov 2010</p>
-            <p><strong>Position: </strong> Systems Admin</p>
-            <p>
-              <strong>Description: </strong>Lorem ipsum dolor sit amet
-              consectetur, adipisicing elit. Perspiciatis in sed officiis,
-              dolorem amet cum?
-            </p>
-          </div>
+          {% endfor %}
         </div>
         <!-- Education -->
         <div class="profile-edu bg-white p-2">
           <h2 class="text-primary">Education</h2>
+          {% for education in education_list %}
           <div>
-            <h3>University Of Washington</h3>
-            <p>Sep 1993 - June 1999</p>
-            <p><strong>Degree: </strong> Masters</p>
-            <p><strong>Field Of Study: </strong> Computer Science</p>
+            <h3>{{education.school}}</h3>
             <p>
-              <strong>Description: </strong>Lorem ipsum dolor sit amet
-              consectetur, adipisicing elit. Perspiciatis in sed officiis,
-              dolorem amet cum?
+              {{education.start_date}} -
+              {% if education.end_date %}
+                {{education.end_date}}
+              {% else %}
+                Present
+              {% endif %}
+            </p>
+            <p><strong>Degree: </strong> {{education.degree}}</p>
+            <p><strong>Field Of Study: </strong> {{education.field}}</p>
+            <p>
+              <strong>Description: </strong>
+              {{education.description}}
             </p>
           </div>
+          {% endfor %}
         </div>
         <!-- Github Repos -->
         <div class="profile-github">

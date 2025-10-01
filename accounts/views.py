@@ -82,7 +82,14 @@ def logout(request):
 def profile(request, id):
     user_profile = UserProfile.objects.get(id=id)
     skills_list = user_profile.skills.split(',') if user_profile.skills else []
-    return render(request, 'accounts/profile.html', {'user_profile': user_profile, 'skills_list': skills_list})
+    experience_list = user_profile.experience_set.all()
+    education_list = user_profile.education_set.all()
+    return render(request, 'accounts/profile.html', {
+        'user_profile': user_profile,
+        'skills_list': skills_list,
+        'experience_list': experience_list,
+        'education_list': education_list,
+        })
 
 
 @login_required

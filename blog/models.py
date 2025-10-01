@@ -8,8 +8,8 @@ class Post(models.Model):
     title = models.CharField(max_length=50)
     slug = models.SlugField(unique=True, blank=True, null=True)
     body = models.TextField()
-    like = models.ManyToManyField(UserProfile, related_name='post_like', blank=True, null=True)
-    dislike = models.ManyToManyField(UserProfile, related_name='post_dislike', blank=True, null=True)
+    like = models.ManyToManyField(UserProfile, related_name='post_like', blank=True)
+    dislike = models.ManyToManyField(UserProfile, related_name='post_dislike', blank=True)
     start_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 

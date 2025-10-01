@@ -1,5 +1,7 @@
 {% extends "base.html" %}
 {% block content %}
+{% load custom_filters %}
+
     <section class="container">
       <h1 class="large text-primary">
         Developers
@@ -9,31 +11,36 @@
       </p>
       <div class="profiles">
         {% for profile in profiles %}
-        <div class="profile bg-light">
-          <img
-            class="round-img"
-            src="{{profile.pfp.url}}"
-            alt=""
-          />
+          <div class="profile bg-light">
+            <img
+              class="round-img"
+              src="{{profile.pfp.url}}"
+              alt=""
+            />
 
-          <div>
-            <h2>{{profile.user.username}}</h2>
-            <p>Developer at Microsoft</p>
-            <p>Seattle, WA</p>
-            <a href="profile.html" class="btn btn-primary">
-              View Profile
-            </a>
+            <div>
+              <h2>{{profile.user.username}}</h2>
+              {% if profile.experience_set.first %}
+                <p>{{profile.experience_set.first.job}} at {{profile.experience_set.first.company}}</p>
+              {% endif %}
+
+              {% if profile.experience_set.first and profile.experience_set.first.location %}
+                <p>
+                  {{profile.experience_set.first.location}}
+                </p>
+              {% endif %}
+
+              <a href="{{profile.get_absolute_url}}" class="btn btn-primary">
+                View Profile
+              </a>
+            </div>
+
+            <ul>
+              {% for skill in profile.skills|split:"," %}
+                <li class="text-primary"><i class="fas fa-check"></i> {{skill}} </li>
+              {% endfor %}
+            </ul>
           </div>
-
-          <ul>
-            <li class="text-primary"><i class="fas fa-check"></i> HTML</li>
-            <li class="text-primary"><i class="fas fa-check"></i> CSS</li>
-            <li class="text-primary">
-              <i class="fas fa-check"></i> JavaScript
-            </li>
-            <li class="text-primary"><i class="fas fa-check"></i> Python</li>
-          </ul>
-        </div>
         {% endfor %}
       </div>
     </section>
