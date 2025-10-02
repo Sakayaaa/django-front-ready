@@ -1,5 +1,5 @@
-from django.shortcuts import render, redirect
-from .models import UserProfile
+from django.shortcuts import render, redirect, get_object_or_404
+from .models import UserProfile, Experience, Education
 from .forms import AddEducationForm, AddExperienceForm, UserProfileForm, RegisterForm
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login as django_login, logout as django_logout
@@ -7,7 +7,7 @@ from django.urls import reverse
 
 
 @login_required
-def addeducation(request):
+def add_education(request):
     if request.method == 'POST':
         form = AddEducationForm(request.POST)
         if form.is_valid():
@@ -21,7 +21,33 @@ def addeducation(request):
 
 
 @login_required
-def addexperience(request):
+def edit_education(request, id):
+    education = get_object_or_404(
+        Education, id=id, user=request.user.userprofile)
+
+    if request.method == "POST":
+        form = AddEducationForm(request.POST, instance=education)
+        if form.is_valid():
+            form.save()
+            return redirect('dashboard')
+
+    form = AddEducationForm(instance=education)
+    return render(request, 'accounts/addeducation.html', {'form': form})
+
+
+@login_required
+def delete_education(request, id):
+    education = get_object_or_404(
+        Education, id=id, user=request.user.userprofile)
+
+    if request.method == "POST":
+        education.delete()
+        return redirect('dashboard')
+    return redirect('dashboard')
+
+
+@login_required
+def add_experience(request):
     if request.method == 'POST':
         form = AddExperienceForm(request.POST)
         if form.is_valid():
@@ -35,7 +61,33 @@ def addexperience(request):
 
 
 @login_required
-def createprofile(request):
+def edit_experience(request, id):
+    experience = get_object_or_404(
+        Experience, id=id, user=request.user.userprofile)
+
+    if request.method == "POST":
+        form = AddExperienceForm(request.POST, instance=experience)
+        if form.is_valid():
+            form.save()
+            return redirect('dashboard')
+
+    form = AddExperienceForm(instance=experience)
+    return render(request, 'accounts/addexperience.html', {'form': form})
+
+
+@login_required
+def delete_experience(request, id):
+    experience = get_object_or_404(
+        Experience, id=id, user=request.user.userprofile)
+
+    if request.method == "POST":
+        experience.delete()
+        return redirect("dashboard")
+    return redirect("dashboard")
+
+
+@login_required
+def create_profile(request):
     user = request.user
     try:
         user_profile = user.userprofile
@@ -56,10 +108,20 @@ def createprofile(request):
 
 @login_required
 def dashboard(request):
-    return render(request, 'accounts/dashboard.html', {})
+    userprofile = request.user.userprofile
+    experience_list = userprofile.experience_set.all().order_by('-id')
+    education_list = userprofile.education_set.all().order_by('-id')
+    return render(request, 'accounts/dashboard.html', {
+        'userprofile': userprofile,
+        'experience_list': experience_list,
+        'education_list': education_list
+    })
 
 
 def login(request):
+    if request.user.is_authenticated:
+        return redirect('dashboard')
+
     if request.method == "POST":
         u = request.POST['username']
         p = request.POST['password']
@@ -67,7 +129,10 @@ def login(request):
 
         if user:
             django_login(request, user)
-            return redirect(reverse('createprofile'))
+            if user.userprofile:
+                return redirect('dashboard')
+            else:
+                return redirect(reverse('createprofile'))
         else:
             return render(request, 'accounts/login.html', {'error': 'error'})
     return render(request, 'accounts/login.html', {})
@@ -89,7 +154,7 @@ def profile(request, id):
         'skills_list': skills_list,
         'experience_list': experience_list,
         'education_list': education_list,
-        })
+    })
 
 
 @login_required
@@ -99,6 +164,9 @@ def profiles(request):
 
 
 def register(request):
+    if request.user.is_authenticated:
+        return redirect('dashboard')
+
     if request.method == "POST":
         form = RegisterForm(request.POST)
         if form.is_valid():
@@ -108,3 +176,12 @@ def register(request):
 
     form = RegisterForm()
     return render(request, 'accounts/register.html', {'form': form})
+
+
+def delete_account(request):
+    user = request.user
+    if request.method == "POST":
+        django_logout(request)
+        user.delete()
+        return redirect('index')
+    return redirect('dashboard')

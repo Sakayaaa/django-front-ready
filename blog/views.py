@@ -3,7 +3,10 @@ from .models import Post, Comment
 from .forms import AddCommentForm, CreatePostForm
 from django.contrib.auth.decorators import login_required
 
+
 def index(request):
+    if request.user.is_authenticated:
+        return redirect('dashboard')
     return render(request, 'blog/index.html', {})
 
 
@@ -23,7 +26,7 @@ def posts(request):
 
     return render(request, 'blog/posts.html', {'posts': posts, 'form':form})
 
-
+@login_required
 def post(request, slug):
     post = Post.objects.get(slug=slug)
     form = AddCommentForm()
@@ -37,7 +40,7 @@ def post(request, slug):
     return render(request, 'blog/post.html', {'post': post, 'form':form})
 
 
-# @login_required
+@login_required
 def add_comment(request, slug):
     post = get_object_or_404(Post, slug=slug)
     
