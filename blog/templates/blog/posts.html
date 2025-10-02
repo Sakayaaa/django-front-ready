@@ -32,14 +32,25 @@
 
             <div>
               <p class="my-1">
+                <h3>{{post.title}}</h3>
+                <br>
                 {{post.body}}
+                <br><br>
               </p>
-              <button class="btn">
-                <i class="fas fa-thumbs-up"> {{post.like.count}} </i>
-              </button>
-              <button class="btn">
-                <i class="fas fa-thumbs-down"> {{post.dislike.count}} </i>
-              </button>
+              <form action="{% url "like_post" post.slug %}" method='POST' style="display:inline;">
+                {% csrf_token %}
+                <button type="submit" class="btn {% if post.user_liked %}btn-success{% endif %}">
+                  <i class="fas fa-thumbs-up"> {{post.like.count}} </i>
+                </button>
+              </form>
+
+              <form action="{% url "dislike_post" post.slug %}" method='POST' style="display:inline;">
+                {% csrf_token %}
+                <button type="submit" class="btn {% if post.user_disliked %}btn-danger{% endif %}">
+                  <i class="fas fa-thumbs-down"> {{post.dislike.count}} </i>
+                </button>
+              </form>
+
               <a href="{{ post.get_absolute_url }}" class="btn btn-primary">
                 Discussion
               </a>
