@@ -1,3 +1,4 @@
+import requests
 from django.shortcuts import render, redirect, get_object_or_404
 from .models import UserProfile, Experience, Education
 from .forms import AddEducationForm, AddExperienceForm, UserProfileForm, RegisterForm
@@ -129,10 +130,11 @@ def login(request):
 
         if user:
             django_login(request, user)
-            if user.userprofile:
+            try:
+                _ = user.userprofile
                 return redirect('dashboard')
-            else:
-                return redirect(reverse('createprofile'))
+            except UserProfile.DoesNotExist:
+                return redirect('create_profile')
         else:
             return render(request, 'accounts/login.html', {'error': 'error'})
     return render(request, 'accounts/login.html', {})
@@ -149,11 +151,23 @@ def profile(request, id):
     skills_list = user_profile.skills.split(',') if user_profile.skills else []
     experience_list = user_profile.experience_set.all()
     education_list = user_profile.education_set.all()
+    github_repos = []
+
+    if user_profile.github_username:
+        try:
+            url = f"https://api.github.com/users/{user_profile.github_username}/repos?sort=updated&per_page=5"
+            response = requests.get(url)
+            if response.status_code == 200:
+                github_repos = response.json()
+        except Exception as e:
+            print("GitHub API error:", e)
+
     return render(request, 'accounts/profile.html', {
         'user_profile': user_profile,
         'skills_list': skills_list,
         'experience_list': experience_list,
         'education_list': education_list,
+        'github_repos': github_repos,
     })
 
 
@@ -172,7 +186,7 @@ def register(request):
         if form.is_valid():
             user = form.save()
             django_login(request, user)
-            return (redirect('createprofile'))
+            return (redirect('create_profile'))
 
     form = RegisterForm()
     return render(request, 'accounts/register.html', {'form': form})
