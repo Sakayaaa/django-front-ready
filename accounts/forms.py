@@ -56,7 +56,7 @@ class UserProfileForm(forms.ModelForm):
     class Meta:
         model = UserProfile
         fields = ['professional_status', 'pfp', 'company', 'website',
-                  'location', 'skills', 'github', 'bio', 'twitter',
+                  'location', 'skills', 'github_username', 'bio', 'twitter',
                   'facebook', 'youtube', 'linkedin', 'instagram'
         ]
         widgets = {
@@ -65,7 +65,7 @@ class UserProfileForm(forms.ModelForm):
             'website': forms.TextInput(attrs={'placeholder': "Website"}),
             'location': forms.TextInput(attrs={'placeholder': "Location"}),
             'skills': forms.TextInput(attrs={'placeholder': "*Skills"}),
-            'github': forms.URLInput(attrs={'placeholder': "Github Link (https://github.com/XXXXX)"}),
+            'github_username': forms.TextInput(attrs={'placeholder': "Github Username"}),
             'bio': forms.Textarea(attrs={'placeholder': "A short bio of yourself"}),
             'twitter': forms.URLInput(attrs={'placeholder': "Twitter URL (https://x.com/XXXXX)", 'class': 'form-control'}),
             'facebook': forms.URLInput(attrs={'placeholder': "Facebook URL (https://facebook.com/XXXXX)"}),

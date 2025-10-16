@@ -28,7 +28,7 @@ class UserProfile(models.Model):
     website = models.URLField(null=True, blank=True)
     location = models.CharField(max_length=50, null=True, blank=True)
     skills = models.CharField(max_length=60)
-    github = models.URLField(null=True, blank=True)
+    github_username = models.CharField(max_length=100, null=True, blank=True)
     bio = models.TextField(max_length=150)
     twitter = models.URLField(null=True, blank=True)
     facebook = models.URLField(null=True, blank=True)
