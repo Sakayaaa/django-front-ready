@@ -95,16 +95,29 @@ def create_profile(request):
     except UserProfile.DoesNotExist:
         user_profile = None
 
-    if request.method == 'POST':
-        form = UserProfileForm(
-            request.POST, request.FILES, instance=user_profile)
-        if form.is_valid():
-            profile = form.save(commit=False)
-            profile.user = user
-            profile.save()
-            return redirect('profile', id=profile.id)
-    form = UserProfileForm(instance=user_profile)
-    return render(request, 'accounts/createprofile.html', {'form': form})
+    # if request.method == 'POST':
+    #     form = UserProfileForm(
+    #         request.POST, request.FILES, instance=user_profile)
+    #     if form.is_valid():
+    #         profile = form.save(commit=False)
+    #         profile.user = user
+    #         profile.save()
+    #         return redirect('profile', id=profile.id)
+    # form = UserProfileForm(instance=user_profile)
+    # return render(request, 'accounts/createprofile.html', {'form': form})
+    
+    match request.method:
+        case "POST":
+            form = UserProfileForm(
+                request.POST, request.FILES, instance=user_profile)
+            if form.is_valid():
+                profile = form.save(commit=False)
+                profile.user = user
+                profile.save()
+                return redirect('profile', id=profile.id)
+        case "GET":
+            form = UserProfileForm(instance=user_profile)
+            return render(request, 'accounts/createprofile.html', {'form': form})
 
 
 @login_required
